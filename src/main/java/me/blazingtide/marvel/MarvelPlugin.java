@@ -5,6 +5,7 @@ import lombok.Getter;
 import me.blazingtide.marvel.loader.PatchLoader;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
+import me.blazingtide.marvel.thread.ThreadFactory;
 import me.blazingtide.marvel.utils.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public class MarvelPlugin extends JavaPlugin {
 
     private final Set<PatchSave<?, ?>> patchSaves = Sets.newHashSet();
     private final PatchLoader loader = new PatchLoader();
+    private final ThreadFactory threadFactory = new ThreadFactory();
 
     public static MarvelPlugin get() {
         return instance;

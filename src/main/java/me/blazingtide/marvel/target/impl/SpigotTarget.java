@@ -12,9 +12,19 @@ import me.blazingtide.marvel.target.PatchTarget;
 @Deprecated
 public class SpigotTarget implements PatchTarget {
 
+    protected static final SpigotTarget SPIGOT_TARGET = new SpigotTarget();
+
+    private SpigotTarget() {
+    }
+
+    public static SpigotTarget of() {
+        return SPIGOT_TARGET;
+    }
+
     @Override
     public String getTargetId() {
         return "Spigot";
     }
+
 
 }

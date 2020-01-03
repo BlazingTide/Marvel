@@ -16,4 +16,8 @@ public interface PluginTarget<T extends JavaPlugin> extends PatchTarget {
         return getPlugin().getName();
     }
 
+    static <T extends JavaPlugin> PluginTarget<T> of(T plugin) {
+        return () -> plugin;
+    }
+
 }

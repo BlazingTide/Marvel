@@ -3,16 +3,14 @@ package me.blazingtide.marvel;
 import com.google.common.collect.Sets;
 import lombok.Getter;
 import me.blazingtide.marvel.loader.PatchLoader;
-import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
 import me.blazingtide.marvel.thread.ThreadFactory;
 import me.blazingtide.marvel.utils.FileUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-import java.util.jar.JarFile;
 
 @Getter
 public class MarvelPlugin extends JavaPlugin {
@@ -30,7 +28,21 @@ public class MarvelPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        Bukkit.getLogger().info("Starting to load all patches.");
+        getLogger().info("Starting to load all patches.");
+
+
+        if (!getDataFolder().exists()) {
+            getDataFolder().mkdirs();
+        }
+        loadPatches();
+    }
+
+    @Override
+    public void onDisable() {
+        for (PatchSave<?, ?> patchSave : patchSaves) {
+            patchSave.getPatch().onDisable();
+        }
+        getLogger().info("Disabled all patches.");
     }
 
     /**
@@ -39,17 +51,14 @@ public class MarvelPlugin extends JavaPlugin {
      * @see me.blazingtide.marvel.MarvelPlugin
      */
     @Deprecated
-    private void loadPatches() throws IOException {
-        JarFile[] jars = FileUtils.getJars(FileUtils.getJarsAsFiles());
-        Patch[] patches = new Patch[jars.length];
+    private void loadPatches() {
+        File[] files = FileUtils.getJarsAsFiles();
 
-        for (int i = 0; i < jars.length; i++) {
-            JarFile jar = jars[i];
-
-            if (jar != null) {
-                //TODO: Finish loading
+        for (File file : files) {
+            if (file != null && file.exists()) {
+                loader.run(file);
             } else {
-                Bukkit.getLogger().severe("Found a jar file that's null. (Super weird)");
+                getLogger().severe("Found a file that's null or does not exist. (Super weird)");
             }
         }
     }

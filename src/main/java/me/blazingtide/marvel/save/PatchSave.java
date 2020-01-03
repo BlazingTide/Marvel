@@ -16,4 +16,18 @@ public interface PatchSave<K extends Patch, V extends PatchSetting> {
 
     V getSetting();
 
+    static <K extends Patch, V extends PatchSetting> PatchSave<K, V> of(K k, V v) {
+        return new PatchSave<K, V>() {
+            @Override
+            public K getPatch() {
+                return k;
+            }
+
+            @Override
+            public V getSetting() {
+                return v;
+            }
+        };
+    }
+
 }

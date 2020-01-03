@@ -17,7 +17,7 @@ public class SpigotTarget implements PatchTarget {
     private SpigotTarget() {
     }
 
-    public static SpigotTarget of() {
+    public static SpigotTarget get() {
         return SPIGOT_TARGET;
     }
 

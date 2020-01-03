@@ -16,6 +16,7 @@ public interface Patch<T extends PatchTarget> {
 
     /**
      * Will be called on start up or when the patch is reloaded
+     * @see me.blazingtide.marvel.loader.PatchLoader
      */
     void onStartup();
 
@@ -24,5 +25,10 @@ public interface Patch<T extends PatchTarget> {
      * is disabled or reloaded.
      */
     void onDisable();
+
+    /**
+     * @return Name which the patch is assigned
+     */
+    String getName();
 
 }

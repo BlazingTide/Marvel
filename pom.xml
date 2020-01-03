@@ -17,6 +17,18 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -30,11 +42,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
-        </dependency>
-        <dependency>
-            <groupId>net.hylist</groupId>
-            <artifactId>spigot-server</artifactId>
-            <version>1.7.10-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

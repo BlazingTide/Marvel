@@ -13,12 +13,8 @@ public class TestPatch implements Patch<SpigotTarget> {
     @Override
     public void onStartup() {
         System.out.println("LOADED PATCH");
-        System.out.println("LOADED PATCH");
-        System.out.println("LOADED PATCH");
-        System.out.println("LOADED PATCH");
-        System.out.println("LOADED PATCH");
-        System.out.println("LOADED PATCH");
-        System.out.println("LOADED PATCH");
+
+//        new TestThread().start();
     }
 
     @Override

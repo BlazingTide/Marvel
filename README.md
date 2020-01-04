@@ -8,4 +8,11 @@ however, recently I decided to make this public.
 - Upload this plugin on your server.
 - Create some sort of patch using the in-house api
 - Upload the patch to this plugin's `configuration directory`
-- Finally, use the command `/marvel load <patch jar name>` to load the patch. 
+- Finally, use the command `/patch load <patch jar name>` to load the patch. 
+
+**COMMANDS**
+
+- `/patch load <patch jar name>` <- Loads a patch
+- `/patch unload <patch name>` <- Unloads a patch
+- `/patch reload <patch name>` <- Reloads a patch
+

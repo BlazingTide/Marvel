@@ -7,6 +7,7 @@ import me.blazingtide.library.command.base.CloverCommandHandler;
 import me.blazingtide.marvel.command.PatchCommand;
 import me.blazingtide.marvel.command.params.PatchSaveParameter;
 import me.blazingtide.marvel.loader.PatchLoader;
+import me.blazingtide.marvel.loader.reason.LoadReason;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
 import me.blazingtide.marvel.utils.FileUtils;
@@ -18,6 +19,13 @@ import java.util.Set;
 
 @Getter
 public class MarvelPlugin extends JavaPlugin {
+
+    /**
+     * TODO:
+     *  * Setup pluginlistener unloading
+     *  * Setup command api unloading
+     *  * Setup spigot command api unloading
+     */
 
     private static MarvelPlugin instance;
 
@@ -66,7 +74,7 @@ public class MarvelPlugin extends JavaPlugin {
         for (File file : files) {
             if (file != null && file.exists()) {
                 try {
-                    loader.load(file);
+                    loader.load(file, LoadReason.SERVER_STARTUP);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

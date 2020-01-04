@@ -3,6 +3,7 @@ package me.blazingtide.marvel.command;
 import me.blazingtide.library.command.base.CommandBase;
 import me.blazingtide.library.command.base.param.Param;
 import me.blazingtide.marvel.MarvelPlugin;
+import me.blazingtide.marvel.loader.reason.LoadReason;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
 import org.bukkit.ChatColor;
@@ -34,7 +35,7 @@ public class PatchCommand {
 
         sender.sendMessage(ChatColor.GRAY + "Attempting to load " + fileName + ".");
         try {
-            Patch<?> patch = MarvelPlugin.get().getLoader().load(file);
+            Patch<?> patch = MarvelPlugin.get().getLoader().load(file, LoadReason.COMMAND);
             sender.sendMessage(ChatColor.GREEN + "Succeeded in loading " + patch.getName() + ".");
         } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "Failed to load " + fileName + ".");
@@ -63,7 +64,7 @@ public class PatchCommand {
         sender.sendMessage(ChatColor.GRAY + "Attempting to reload " + patch.getName() + ".");
         try {
             MarvelPlugin.get().getLoader().unload(save);
-            MarvelPlugin.get().getLoader().load(save.getFile());
+            MarvelPlugin.get().getLoader().load(save.getFile(), LoadReason.COMMAND);
             sender.sendMessage(ChatColor.GREEN + "Succeeded in reloading " + patch.getName() + ".");
         } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "Failed to reload " + patch.getName() + ".");

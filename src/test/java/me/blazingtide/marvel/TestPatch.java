@@ -1,8 +1,11 @@
 package me.blazingtide.marvel;
 
+import me.blazingtide.marvel.flags.Flag;
+import me.blazingtide.marvel.flags.PatchFlags;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.target.impl.SpigotTarget;
 
+@PatchFlags(values = Flag.DO_NOT_LOAD_ON_PLUGIN_STARTUP)
 public class TestPatch implements Patch<SpigotTarget> {
 
     @Override

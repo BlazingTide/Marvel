@@ -3,9 +3,11 @@ package me.blazingtide.marvel.loader;
 import me.blazingtide.marvel.MarvelPlugin;
 import me.blazingtide.marvel.flags.Flag;
 import me.blazingtide.marvel.flags.PatchFlags;
+import me.blazingtide.marvel.loader.reason.LoadReason;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
 import me.blazingtide.marvel.settings.PatchSetting;
+import me.blazingtide.marvel.utils.ArrayUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +52,7 @@ public class PatchLoader {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public Patch<?> load(File file) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public Patch<?> load(File file, LoadReason reason) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         URLClassLoader loader = new URLClassLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
         JarFile jar = new JarFile(file);
         Optional<Class<? extends Patch>> mainClass = findMainClass(jar, loader);
@@ -71,15 +73,20 @@ public class PatchLoader {
             }
         }
 
-        return registerPatch(mainClass.get(), file, loader);
+        return registerPatch(mainClass.get(), file, loader, reason);
     }
 
-    private Patch<?> registerPatch(Class<? extends Patch> clazz, File file, URLClassLoader loader) throws IllegalAccessException, InstantiationException {
+    private Patch<?> registerPatch(Class<? extends Patch> clazz, File file, URLClassLoader loader, LoadReason reason) throws IllegalAccessException, InstantiationException, IOException {
         Patch<?> patch = clazz.newInstance();
         PatchFlags flags = clazz.getAnnotation(PatchFlags.class);
 
         PatchSetting<Patch> setting = PatchSetting.of(patch, flags == null ? new Flag[0] : flags.values());
         PatchSave<?, ?> save = PatchSave.of(patch, setting, file, loader);
+
+        if (ArrayUtils.contains(setting.getFlags(), Flag.DO_NOT_LOAD_ON_PLUGIN_STARTUP) && reason == LoadReason.SERVER_STARTUP) {
+            unload(save);
+            return null;
+        }
 
         MarvelPlugin.get().getLogger().info("Loaded Patch: " + patch.getName());
         MarvelPlugin.get().getPatchSaves().add(save);

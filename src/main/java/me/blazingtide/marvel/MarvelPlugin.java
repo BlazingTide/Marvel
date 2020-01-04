@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import me.blazingtide.library.command.base.CloverCommandHandler;
 import me.blazingtide.marvel.command.PatchCommand;
+import me.blazingtide.marvel.command.params.PatchSaveParameter;
 import me.blazingtide.marvel.loader.PatchLoader;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
@@ -12,6 +13,7 @@ import me.blazingtide.marvel.utils.FileUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.Set;
 
 @Getter
@@ -38,6 +40,7 @@ public class MarvelPlugin extends JavaPlugin {
         loadPatches();
 
         CloverCommandHandler.register(new PatchCommand());
+        CloverCommandHandler.registerParameter(new PatchSaveParameter(), PatchSave.class);
     }
 
     @SneakyThrows
@@ -71,6 +74,12 @@ public class MarvelPlugin extends JavaPlugin {
                 getLogger().severe("Found a file that's null or does not exist. (Super weird)");
             }
         }
+    }
+
+    public Optional<PatchSave<?, ?>> getPatchSaveByName(String name) {
+        return MarvelPlugin.get().getPatchSaves().stream()
+                .filter(patchSave -> patchSave.getPatch().getName().equalsIgnoreCase(name))
+                .findFirst();
     }
 
 }

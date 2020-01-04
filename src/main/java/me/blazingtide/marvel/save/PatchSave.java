@@ -5,7 +5,6 @@ import me.blazingtide.marvel.settings.PatchSetting;
 
 import java.io.File;
 import java.net.URLClassLoader;
-import java.util.jar.JarFile;
 
 /**
  * Basic storage for patches so it's easier to call them for
@@ -15,14 +14,6 @@ import java.util.jar.JarFile;
  * @param <V> PatchSetting
  */
 public interface PatchSave<K extends Patch, V extends PatchSetting> {
-
-    K getPatch();
-
-    V getSetting();
-
-    File getFile();
-
-    URLClassLoader getLoader();
 
     static <K extends Patch, V extends PatchSetting> PatchSave<K, V> of(K k, V v, File file, URLClassLoader loader) {
         return new PatchSave<K, V>() {
@@ -47,5 +38,13 @@ public interface PatchSave<K extends Patch, V extends PatchSetting> {
             }
         };
     }
+
+    K getPatch();
+
+    V getSetting();
+
+    File getFile();
+
+    URLClassLoader getLoader();
 
 }

@@ -24,6 +24,6 @@ public class TestPatch implements Patch<SpigotTarget> {
 
     @Override
     public String getName() {
-        return "Test Patch";
+        return "Test";
     }
 }

@@ -31,6 +31,8 @@ public class PatchLoader {
      */
     public void unload(PatchSave save) throws IOException {
         save.getLoader().close();
+
+        MarvelPlugin.get().getPatchSaves().remove(save);
     }
 
     /**

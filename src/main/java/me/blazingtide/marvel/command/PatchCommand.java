@@ -3,6 +3,7 @@ package me.blazingtide.marvel.command;
 import me.blazingtide.library.command.base.CommandBase;
 import me.blazingtide.library.command.base.param.Param;
 import me.blazingtide.marvel.MarvelPlugin;
+import me.blazingtide.marvel.command.parent.PatchCommandParent;
 import me.blazingtide.marvel.loader.reason.LoadReason;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
@@ -21,7 +22,7 @@ public class PatchCommand {
                 .collect(Collectors.joining(", ")));
     }
 
-    @CommandBase(label = {"patch.load", "patch.add", "patch.enable"}, permission = "marvel.admin")
+    @CommandBase(label = {"load", "add", "enable"}, parents = PatchCommandParent.class, permission = "marvel.admin")
     public void executeLoad(CommandSender sender, @Param(val = "File") String fileName) {
         if (!fileName.endsWith(".jar")) {
             fileName = fileName.concat(".jar");
@@ -43,7 +44,7 @@ public class PatchCommand {
         }
     }
 
-    @CommandBase(label = {"patch.unload", "patch.disable"}, permission = "marvel.admin")
+    @CommandBase(label = {"unload", "disable"}, parents = PatchCommandParent.class, permission = "marvel.admin")
     public void executeUNload(CommandSender sender, @Param(val = "Patch") PatchSave save) {
         Patch patch = save.getPatch();
 
@@ -57,7 +58,7 @@ public class PatchCommand {
         }
     }
 
-    @CommandBase(label = {"patch.reload"}, permission = "marvel.admin")
+    @CommandBase(label = {"reload"}, parents = PatchCommandParent.class, permission = "marvel.admin")
     public void executeReload(CommandSender sender, @Param(val = "Patch") PatchSave save) {
         Patch patch = save.getPatch();
 

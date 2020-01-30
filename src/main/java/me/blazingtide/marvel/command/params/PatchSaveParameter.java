@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 public class PatchSaveParameter implements CommandParameter<PatchSave<?, ?>> {
     @Override
     public PatchSave<?, ?> cast(CommandSender commandSender, String s) {
-        return MarvelPlugin.get().getPatchSaveByName(s).get();
+        return MarvelPlugin.get().getPatchSaveByName(s).orElse(null);
     }
 
     @Override

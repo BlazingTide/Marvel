@@ -7,7 +7,10 @@ import me.blazingtide.marvel.loader.reason.LoadReason;
 import me.blazingtide.marvel.patch.Patch;
 import me.blazingtide.marvel.save.PatchSave;
 import me.blazingtide.marvel.settings.PatchSetting;
+import me.blazingtide.marvel.target.impl.PluginTarget;
 import me.blazingtide.marvel.utils.ArrayUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,7 +86,33 @@ public class PatchLoader {
         PatchSetting<Patch> setting = PatchSetting.of(patch, flags == null ? new Flag[0] : flags.values());
         PatchSave<?, ?> save = PatchSave.of(patch, setting, file, loader);
 
+        if (ArrayUtils.contains(setting.getFlags(), Flag.DISABLE_ON_UNKNOWN_PLUGIN) && patch.getTarget() instanceof PluginTarget<?>) {
+            boolean success = true;
+
+             /*
+              This try catch will prevent Java unknown class exceptions that might occur if a plugin is really not found
+             */
+            try {
+                String targetId = patch.getTarget().getTargetId();
+                Plugin plugin = Bukkit.getPluginManager().getPlugin(targetId);
+
+                if (plugin != null && !plugin.isEnabled()) {
+                    success = false;
+                }
+
+            } catch (Exception ignored) {
+                success = false;
+            }
+
+            if (!success) {
+                MarvelPlugin.get().getLogger().info("Failed to load patch: " + patch.getName() + " (Reason: " + Flag.DISABLE_ON_UNKNOWN_PLUGIN + ")");
+                unload(save);
+                return null;
+            }
+        }
+
         if (ArrayUtils.contains(setting.getFlags(), Flag.DO_NOT_LOAD_ON_PLUGIN_STARTUP) && reason == LoadReason.SERVER_STARTUP) {
+            MarvelPlugin.get().getLogger().info("Failed to load patch: " + patch.getName() + " (Reason: " + Flag.DO_NOT_LOAD_ON_PLUGIN_STARTUP + ")");
             unload(save);
             return null;
         }
